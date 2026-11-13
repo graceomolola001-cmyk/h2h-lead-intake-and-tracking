@@ -1,54 +1,71 @@
-# Heart2Heart Enterprise | Landing Page, Conversion Tracking & Payment Automation
+# From Landing Page to Payment: Heart2Heart's Marketing & Sales Automation
 
-**Project implementation: Grace Omolola Odukoya.** This repository documents an integrated digital-acquisition and lead-operations implementation created for Heart2Heart Enterprise and the SRM programme.
+**Landing page development · Google Ads & conversion tracking · Meta Conversions API · n8n · Google Sheets · Gmail**
 
-## The story
+**Built by Grace Omolola Odukoya for Heart2Heart Enterprise.**
 
-A prospect can discover a programme through an advertisement, visit a landing page and express interest. But the business still needs to know what happened next: did the prospect submit a form, pay, need a follow-up, or become a future sales opportunity? Missing this connection wastes marketing spend and creates manual work for the team.
+## The challenge
 
-Grace implemented the project across successive layers:
+Someone clicks your ad. They like what they see. They fill out your form. Then they say they've paid.
 
-1. **Landing page:** designed and developed the page that introduced the programme and captured interested prospects.
-2. **Measurement:** configured Google tracking (Google Tag Manager, Google Analytics 4, and relevant conversion events) and Google Ads conversion tracking for the acquisition journey.
-3. **Meta Conversions API:** added server-side conversion-event routing to connect business events with Meta measurement, subject to API configuration and consent.
-4. **Lead operations:** developed an n8n workflow to read lead submissions, normalize data and maintain a master tracker.
-5. **Payment and follow-up:** built a payment-status workflow that checks the tracking sheet, distinguishes claimed from verified payment, and routes relevant leads for follow-up and subsequent sales opportunities.
+Can your team follow that journey from the first click to a verified payment? What happens to people who enquire, leave, and need a follow-up?
 
-## What this repository contains
+For Heart2Heart Enterprise's SRM programme, I worked on connecting the pieces of that journey so enquiries could be captured, organized, measured, and followed up without relying on someone to remember every step.
 
-The reproducible, sanitized **H2H SRM | Path A | Lead Intake** n8n workflow is the code artifact for the lead and payment-tracking stage. The landing page source, Google Ads account configuration, GTM container and live Meta credentials are **not included** in this repository. A related [Meta Conversions Event Routing](https://github.com/graceomolola001-cmyk/meta-conversions-event-routing) repository covers the Meta workflow separately.
+## What I built
 
-## End-to-end architecture
+I developed the system in stages:
+
+| Stage | What I implemented | Why it matters |
+| --- | --- | --- |
+| **1. Landing page** | A programme landing page designed to turn interest into enquiries | Gives visitors a clear next step |
+| **2. Google measurement** | Google Tag Manager (GTM), Google Analytics 4 (GA4), Google Ads conversion tracking | Supports measurement of campaign and website actions |
+| **3. Meta measurement** | Server-side conversion-event routing with Meta Conversions API | Connects eligible business events to advertising measurement |
+| **4. Lead intake** | An n8n workflow that cleans form entries and writes them to a master Google Sheets tracker | Keeps enquiries organized |
+| **5. Payment and follow-up** | Payment-claim checks, verification requests, lead statuses, and routed Gmail notifications | Helps the team see which enquiries need attention |
+
+**Important payment distinction:** A prospect saying they paid triggers a **pending verification** process. The exported workflow does not independently confirm a bank transaction.
+
+## How the system fits together
 
 ```mermaid
 flowchart LR
- A[Google / Meta ads] --> B[SRM landing page]
- B --> C[Lead submission]
- C --> D[Google tracking and conversion tags]
- C --> E[n8n intake and normalization]
- E --> F[Master lead tracker]
- F --> G{Payment verification}
- G -->|Verified| H[Paid customer status]
- G -->|Unverified| I[Follow-up]
- I --> J[Future opportunity tracking]
- H --> K[Conversion event routing]
+    A[Google / Meta ads] --> B[SRM landing page]
+    B --> C[Form enquiry]
+    C --> D[GA4 / GTM / Ads measurement]
+    C --> E[n8n lead intake]
+    E --> F[Google Sheets master tracker]
+    F --> G{Payment claimed?}
+    G -->|Yes| H[Manual verification request]
+    G -->|No| I[Follow-up / future opportunity]
+    H --> J[Verified business outcome]
+    J --> K[Eligible Meta CAPI event]
 ```
 
-*Conceptual architecture of the broader project. The exported n8n workflow alone does not verify each external integration or prove live performance.*
+This diagram shows the **overall project architecture**. The GitHub export in this repository covers the n8n lead intake, tracking, payment-claim, and follow-up portion. The original landing-page source and Google Ads/GTM account exports are not included.
 
-## Replicate the lead workflow
+## Explore the code
 
-1. Import the sanitized workflow from `workflows/` into a **test** n8n instance.
-2. Inspect all Google Sheets column names and create corresponding *synthetic* tabs for form submissions, master tracking and payment verification.
-3. Reconnect Google Sheets and Gmail with **your own** OAuth credentials. Update every placeholder and test recipient.
-4. Run three test submissions: verified payment, claimed but unverified payment, and no payment with a follow-up request.
-5. Check the master tracker, email routing, duplicate behavior and payment status. Never treat a claimed payment as verified without checking your independent evidence.
-6. Configure GA4/GTM and Google Ads separately, validate your conversion-event triggers, and use Meta test events when reviewing the companion Meta workflow.
+- **[n8n workflow JSON](workflows/17-h2h-srm-path-a-lead-intake.json):** The sanitized, 14-node lead intake and payment-tracking export
+- **[Node-by-node workflow map](docs/WORKFLOW_MAP.md):** What each node does
+- **[Reproduction checklist](docs/REPLICATION_CHECKLIST.md):** Test setup and verification steps
+- **[Review and test findings](docs/REVIEW_AND_TEST_RESULTS.md):** What passed offline and what still needs attention
+- **[Meta CAPI companion project](https://github.com/graceomolola001-cmyk/meta-conversions-event-routing):** Server-side conversion-event routing
 
-## What a prospective client can learn
+## Try it in a test environment
 
-This project shows how landing page creation, attribution, lead tracking and payment operations fit together as one measurable customer journey. The workflows illustrate implementation, not verified revenue uplift or complete production readiness.
+1. Import the JSON file into a **test** n8n instance. Keep it inactive while configuring it.
+2. Create fictional Google Sheets for form submissions, the master tracker, and payment verification. Match the column headers used by the nodes.
+3. Reconnect your own Google Sheets and Gmail credentials. Replace every placeholder and route notifications to a test inbox.
+4. Test three submissions: no payment, payment claimed but unverified, and payment independently verified.
+5. Check that statuses, tracker rows, and follow-up routes match expectations **before enabling live triggers**.
 
-## Safety
+The export currently generates a new random lead ID on reprocessing and may create duplicates. Its sheet matching configuration also needs testing. Those are open engineering issues, documented in the [review](docs/REVIEW_AND_TEST_RESULTS.md).
 
-The public version must not contain real leads, account details, pixel IDs, payment references, personal email addresses, access tokens, or live webhook URLs. Keep your landing-page assets and live ad-account exports private unless separately reviewed.
+## What this project demonstrates
+
+I can connect **web development, acquisition tracking, server-side measurement, and business operations** into a coherent customer journey. The published code makes the lead-operations portion inspectable and reproducible.
+
+Offline tests verified selected cleanup and payment-claim logic. Live end-to-end delivery, payment verification, and advertising attribution have **not** been independently validated for this public export. No revenue or conversion uplift is claimed.
+
+**Privacy:** Use synthetic leads when testing. Never commit actual customer records, account access tokens, bank details, or live webhook URLs.
