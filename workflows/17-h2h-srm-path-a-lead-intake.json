@@ -1,0 +1,2146 @@
+{
+  "name": "H2H SRM | Path A | Lead Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "demo@example.com",
+        "subject": "=SRM Follow-Up Required | {{$('payment claimed to be made').item.json[\"Full Name\"]}}",
+        "message": "=SRM FOLLOW-UP REQUEST\n\nA new SRM prospect has requested to be contacted by a Heart2Heart Enterprise Representative.\n\nLEAD DETAILS\n\nName: {{$json[\"Full Name\"]}}\nWhatsApp / Phone: {{$json[\"WhatsApp / Phone\"]}}\nEmail: {{$json[\"Email Address\"]}}\nLocation: {{$json[\"Location\"]}}\n\nWHAT THEY SHARED\n\n{{$json[\"Situation Response\"]}}\n\nFOLLOW-UP ACTION\n\nPlease contact this person and:\n\n1. Introduce yourself as a Heart2Heart Enterprise Representative.\n2. Confirm that they requested information about the Self-Realization Mentorship Programme (SRM).\n3. Answer their questions and provide any information they need about the programme.\n4. If they are ready to proceed, guide them through the official registration and payment process.\n5. Record any important outcome or update for the H2H team.\n\nLead ID: {{$json[\"Lead ID\"]}}\n\nThank you.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        -16
+      ],
+      "id": "9391ded4-3d33-46e7-99b0-176a45862a78",
+      "name": "Send a message"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "=https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit?gid=275727997#gid=275727997",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "=https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit?gid=275727997#gid=275727997",
+          "mode": "url"
+        },
+        "options": {
+          "columnsToWatch": [
+            "Email Address",
+            "Name",
+            "Whatsapp number ",
+            "Age as last birthday ",
+            "Social status",
+            "Current location (State, Country)",
+            "Have you made payment yet?",
+            "If you have not made payment yet, would you like Heart2Heart Enterprise Representative to contact you about SRM",
+            "What best describes your situation?",
+            "In 3 sentences, who do you think you are?",
+            "Upload proof of payment receipt if you have paid",
+            "Meta Click ID (please ignore)"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        -48
+      ],
+      "id": "393d3202-5a10-478f-a0d4-c92c52d41f48",
+      "name": "Form Submission",
+      "alwaysOutputData": true,
+      "notesInFlow": true,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d35f1904-f80a-4ba0-b89b-b7b3754cbfea",
+              "name": "Submitted at",
+              "value": "={{ $json.Timestamp }}",
+              "type": "number"
+            },
+            {
+              "id": "fae55a7a-5c09-4505-a3ed-f68c28f28f98",
+              "name": "Email",
+              "value": "={{ $json['Email Address'] }}",
+              "type": "string"
+            },
+            {
+              "id": "64bc8b28-759f-46d9-be11-cdc3609d0f9f",
+              "name": "Full Name",
+              "value": "={{ $json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "f4a82f99-4ba3-4422-8bf7-708c245f578b",
+              "name": "Whatsapp",
+              "value": "={{ $json['Whatsapp number '] }}",
+              "type": "string"
+            },
+            {
+              "id": "1c39f2a2-cc15-472b-a089-83b2ff3a5823",
+              "name": "Age",
+              "value": "={{ $json['Age as last birthday '] }}",
+              "type": "number"
+            },
+            {
+              "id": "be0558c8-c991-46af-927a-358a7b007927",
+              "name": "Social status",
+              "value": "={{ $json['Social status'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6eeafa42-a776-444a-a651-af9c9609771f",
+              "name": "Location",
+              "value": "={{ $json['Current location (State, Country)'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a2bc7dcb-369e-49ab-9f18-ec4ebfa54db9",
+              "name": "Payment claimed",
+              "value": "={{ $json['Have you made payment yet?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "149b8d7b-9920-4c3e-9e50-bae05e70a5e2",
+              "name": "Followup requested",
+              "value": "={{ $json['If you have not made payment yet, would you like Heart2Heart Enterprise Representative to contact you about SRM'] }}",
+              "type": "string"
+            },
+            {
+              "id": "efe51633-8b3c-41f6-8b18-75115c237a8c",
+              "name": "Situation",
+              "value": "={{ $json['What best describes your situation?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9c360c66-2220-423a-a841-972730fceb12",
+              "name": "Self Description",
+              "value": "={{ $json['In 3 sentences, who do you think you are?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a78bb547-098f-429d-9ac3-5c4376f7b860",
+              "name": "Proof of Payment",
+              "value": "={{ $json['Upload proof of payment receipt if you have paid'] }}",
+              "type": "string"
+            },
+            {
+              "id": "8913bdaa-ba0c-4003-9e52-8b07fde7ddb9",
+              "name": "Meta Click ID (please ignore)",
+              "value": "={{ $json['Meta Click ID (please ignore)'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true,
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -592,
+        -48
+      ],
+      "id": "7e8d2684-1bf9-456f-af19-a9e2145f79cb",
+      "name": "Collect data",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "function cleanString(value) {\n  if (value === null || value === undefined) {\n    return '';\n  }\n\n  return String(value).trim();\n}\n\nfunction normalizeEmail(value) {\n  return cleanString(value).toLowerCase();\n}\n\nfunction normalizeYesNo(value) {\n  const text = cleanString(value).toLowerCase();\n\n  if (['yes', 'y', 'true'].includes(text)) {\n    return 'YES';\n  }\n\n  if (['no', 'n', 'false'].includes(text)) {\n    return 'NO';\n  }\n\n  return '';\n}\n\nfunction normalizePhone(value, location = '') {\n  let phone = cleanString(value);\n\n  if (!phone) return '';\n\n  phone = phone.replace(/[^\\d+]/g, '');\n\n  const hasPlus = phone.startsWith('+');\n\n  let digits = phone.replace(/\\+/g, '');\n\n  if (digits.startsWith('0')) {\n    const locationText = cleanString(location).toLowerCase();\n\n    const isNigeria =\n      locationText.includes('nigeria') ||\n      locationText === 'ng';\n\n    if (isNigeria) {\n      digits = '234' + digits.substring(1);\n    } else {\n      return phone;\n    }\n  }\n\n  if (digits.startsWith('234')) {\n    return '+' + digits;\n  }\n\n  if (hasPlus) {\n    return '+' + digits;\n  }\n\n  return phone;\n}\n\nfunction isValidEmail(value) {\n  const email = normalizeEmail(value);\n\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}\n\nfunction isValidPhone(value) {\n  const phone = cleanString(value);\n\n  if (!phone) return false;\n\n  const digits = phone.replace(/\\D/g, '');\n\n  return digits.length >= 10 && digits.length <= 15;\n}\n\nfunction normalizeAge(value) {\n  if (value === null || value === undefined || value === '') {\n    return '';\n  }\n\n  const raw = String(value).trim().toLowerCase();\n\n  // Extract a number from inputs such as:\n  // \"24\", \"24 years\", \"24 years old\", \"I am 24\", \"8 yrs\"\n  const numericMatch = raw.match(/\\b\\d{1,3}\\b/);\n\n  if (numericMatch) {\n    return Number(numericMatch[0]);\n  }\n\n  const numberWords = {\n    zero: 0,\n    one: 1,\n    two: 2,\n    three: 3,\n    four: 4,\n    five: 5,\n    six: 6,\n    seven: 7,\n    eight: 8,\n    nine: 9,\n    ten: 10,\n    eleven: 11,\n    twelve: 12,\n    thirteen: 13,\n    fourteen: 14,\n    fifteen: 15,\n    sixteen: 16,\n    seventeen: 17,\n    eighteen: 18,\n    nineteen: 19,\n    twenty: 20,\n    thirty: 30,\n    forty: 40,\n    fifty: 50,\n    sixty: 60,\n    seventy: 70,\n    eighty: 80,\n    ninety: 90\n  };\n\n  const words = raw.replace(/-/g, ' ').split(/\\s+/);\n\n  // Example: \"eight\"\n  if (\n    words.length === 1 &&\n    numberWords[words[0]] !== undefined\n  ) {\n    return numberWords[words[0]];\n  }\n\n  // Examples: \"twenty four\", \"twenty-four\"\n  if (words.length === 2) {\n    const tens = numberWords[words[0]];\n    const ones = numberWords[words[1]];\n\n    if (\n      tens !== undefined &&\n      tens >= 20 &&\n      tens % 10 === 0 &&\n      ones !== undefined &&\n      ones >= 1 &&\n      ones <= 9\n    ) {\n      return tens + ones;\n    }\n  }\n\n  // Examples:\n  // \"I am twenty four years old\"\n  // \"twenty four years\"\n  const relevantWords = words.filter(\n    word => numberWords[word] !== undefined\n  );\n\n  if (relevantWords.length >= 1) {\n    const tensWord = relevantWords.find(\n      word =>\n        numberWords[word] >= 20 &&\n        numberWords[word] % 10 === 0\n    );\n\n    const onesWord = relevantWords.find(\n      word =>\n        numberWords[word] >= 1 &&\n        numberWords[word] <= 9\n    );\n\n    if (tensWord && onesWord) {\n      return numberWords[tensWord] + numberWords[onesWord];\n    }\n\n    if (relevantWords.length === 1) {\n      return numberWords[relevantWords[0]];\n    }\n  }\n\n  return '';\n}\n\nfunction isValidAge(value) {\n  const age = normalizeAge(value);\n\n  return Number.isInteger(age) && age >= 13 && age <= 100;\n}\n\nfunction hasValue(value) {\n  return cleanString(value) !== '';\n}\n\nfunction isLikelyTestResponse(data) {\n  const testTerms = [\n    'test',\n    'testing',\n    'dummy',\n    'sample',\n    'fake'\n  ];\n\n  const fieldsToCheck = [\n    data['Full Name'],\n    data['Email'],\n    data['Situation'],\n    data['Self Description']\n  ];\n\n  const combined = fieldsToCheck\n    .map(value => cleanString(value).toLowerCase())\n    .join(' ');\n\n  return testTerms.some(term => combined.includes(term));\n}\n\nfunction normalizeTimestamp(value) {\n  if (!hasValue(value)) {\n    return '';\n  }\n\n  const numericValue = Number(value);\n\n  // Google Sheets serial date\n  if (!Number.isNaN(numericValue)) {\n    const baseDate = new Date(Date.UTC(1899, 11, 30));\n\n    const date = new Date(\n      baseDate.getTime() +\n      numericValue * 24 * 60 * 60 * 1000\n    );\n\n    return date.toISOString();\n  }\n\n  const parsedDate = new Date(value);\n\n  if (!Number.isNaN(parsedDate.getTime())) {\n    return parsedDate.toISOString();\n  }\n\n  return cleanString(value);\n}\n\nfunction getLocationCountry(location) {\n  const text = cleanString(location);\n\n  if (!text) return '';\n\n  const parts = text.split(',');\n\n  if (parts.length >= 2) {\n    return cleanString(\n      parts[parts.length - 1]\n    ).toUpperCase();\n  }\n\n  const lower = text.toLowerCase();\n\n  if (lower === 'nigeria') {\n    return 'NIGERIA';\n  }\n\n  if (lower === 'ng') {\n    return 'NG';\n  }\n\n  return '';\n}\n\nfunction getLeadRegion(location) {\n  const country = getLocationCountry(location);\n\n  if (\n    country === 'NIGERIA' ||\n    country === 'NG'\n  ) {\n    return 'NIGERIA';\n  }\n\n  if (country) {\n    return 'INTERNATIONAL';\n  }\n\n  return 'UNKNOWN';\n}\n\nfunction isInternationalLead(location) {\n  const region = getLeadRegion(location);\n\n  if (region === 'INTERNATIONAL') {\n    return 'YES';\n  }\n\n  if (region === 'NIGERIA') {\n    return 'NO';\n  }\n\n  return '';\n}\n\n\n// --------------------------------------------------\n// MAIN PROCESSING\n// --------------------------------------------------\n\nconst data = $json;\n\nconst fullName = cleanString(\n  data['Full Name']\n);\n\nconst email = normalizeEmail(\n  data['Email']\n);\n\nconst location = cleanString(\n  data['Location']\n);\n\nconst whatsapp = normalizePhone(\n  data['Whatsapp'],\n  location\n);\n\nconst age = normalizeAge(\n  data['Age']\n);\n\nconst socialStatus = cleanString(\n  data['Social status']\n);\n\nconst paymentClaimed = normalizeYesNo(\n  data['Payment claimed']\n);\n\nconst followUpRequested = normalizeYesNo(\n  data['Followup requested']\n);\n\nconst situationResponse = cleanString(\n  data['Situation']\n);\n\nconst selfDescription = cleanString(\n  data['Self Description']\n);\n\nconst proofOfPayment = cleanString(\n  data['Proof of Payment']\n);\n\nconst dateSubmitted = normalizeTimestamp(\n  data['Submitted at']\n);\n\n// Meta attribution\nconst metaClickId = cleanString(\n  data['Meta Click ID (please ignore)']\n);\n\n\n// --------------------------------------------------\n// VALIDATION\n// --------------------------------------------------\n\nconst emailValid = isValidEmail(email);\n\nconst phoneValid = isValidPhone(whatsapp);\n\nconst ageValid = isValidAge(age);\n\nconst nameValid = hasValue(fullName);\n\nconst locationValid = hasValue(location);\n\nconst situationValid = hasValue(\n  situationResponse\n);\n\nconst selfDescriptionValid = hasValue(\n  selfDescription\n);\n\n\n// --------------------------------------------------\n// ANOMALIES\n// --------------------------------------------------\n\nconst anomalies = [];\n\nif (!nameValid) {\n  anomalies.push('MISSING_NAME');\n}\n\nif (!emailValid) {\n  anomalies.push('INVALID_EMAIL');\n}\n\nif (!phoneValid) {\n  anomalies.push('INVALID_PHONE');\n}\n\nif (!ageValid) {\n  anomalies.push('INVALID_AGE');\n}\n\nif (!locationValid) {\n  anomalies.push('MISSING_LOCATION');\n}\n\nif (!situationValid) {\n  anomalies.push('MISSING_SITUATION_RESPONSE');\n}\n\nif (!selfDescriptionValid) {\n  anomalies.push('MISSING_SELF_DESCRIPTION');\n}\n\nif (!paymentClaimed) {\n  anomalies.push('MISSING_PAYMENT_CLAIM');\n}\n\nif (!followUpRequested) {\n  anomalies.push('MISSING_FOLLOWUP_REQUEST');\n}\n\n\n// --------------------------------------------------\n// TEST SUBMISSION DETECTION\n// --------------------------------------------------\n\nconst possibleTestSubmission =\n  isLikelyTestResponse(data);\n\nif (possibleTestSubmission) {\n  anomalies.push(\n    'POSSIBLE_TEST_SUBMISSION'\n  );\n}\n\n\n// --------------------------------------------------\n// FORM VALIDATION STATUS\n// --------------------------------------------------\n\nlet formValidationStatus = 'VALID';\n\nif (\n  anomalies.includes('INVALID_EMAIL') ||\n  anomalies.includes('INVALID_PHONE') ||\n  anomalies.includes('INVALID_AGE') ||\n  anomalies.includes('MISSING_NAME') ||\n  anomalies.includes('MISSING_LOCATION')\n) {\n  formValidationStatus = 'INVALID';\n} else if (anomalies.length > 0) {\n  formValidationStatus = 'VALID_WITH_WARNINGS';\n}\n\n\n// --------------------------------------------------\n// LEAD ID\n// --------------------------------------------------\n\nconst dateForId = new Date();\n\nconst datePart =\n  dateForId.getFullYear().toString() +\n  String(\n    dateForId.getMonth() + 1\n  ).padStart(2, '0') +\n  String(\n    dateForId.getDate()\n  ).padStart(2, '0');\n\nconst randomPart = Math.random()\n  .toString(36)\n  .substring(2, 8)\n  .toUpperCase();\n\nconst leadId =\n  `SRM-${datePart}-${randomPart}`;\n\n\n// --------------------------------------------------\n// LEAD STATUS\n// --------------------------------------------------\n\nlet leadStatus = 'WARM';\n\nif (paymentClaimed === 'YES') {\n  leadStatus = 'PAYMENT CLAIMED';\n}\n\n\n// --------------------------------------------------\n// FOLLOW-UP STATUS\n// --------------------------------------------------\n\nlet followUpStatus = 'PASSIVE';\n\nif (followUpRequested === 'YES') {\n  followUpStatus = 'ACTIVE';\n}\n\n\n// --------------------------------------------------\n// RETURN CLEAN DATA\n// --------------------------------------------------\n\nreturn {\n  json: {\n    'Date Submitted': dateSubmitted,\n    'Lead ID': leadId,\n    'Full Name': fullName,\n    'Email Address': email,\n    'WhatsApp / Phone': whatsapp,\n    'Location': location,\n    'Age': age,\n    'Social Status': socialStatus,\n    'Lead Region': getLeadRegion(location),\n    'International Lead?': isInternationalLead(location),\n    'Payment Claimed?': paymentClaimed,\n    'Proof of Payment': proofOfPayment,\n    'Payment Verified?': 'PENDING',\n    'Staff Verification Notes': '',\n    'AI Analysis Status': 'PENDING',\n    'Situation Response': situationResponse,\n    'Self-Description': selfDescription,\n    'Form Validation Status': formValidationStatus,\n    'Form Anomalies': anomalies.join(', '),\n    'Possible Test Submission?':\n      possibleTestSubmission ? 'YES' : 'NO',\n    'Lead Status': leadStatus,\n    'Welcome Email Sent?': 'NO',\n    'Follow-up Requested?': followUpRequested,\n    'Follow-up Status': followUpStatus,\n    'Last Updated': new Date().toISOString(),\n\n    // Keep Meta Click ID LAST\n    'Meta Click ID': metaClickId\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        0
+      ],
+      "id": "19fefcd3-e3e7-473d-bcd0-3b25d10acb54",
+      "name": "Clean data",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d14e886-3c13-4591-ba86-36bfa7b7bd94",
+              "name": "WhatsApp / Phone",
+              "value": "={{ $json['WhatsApp / Phone'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e73e12b3-90f2-474f-b83b-1a471b12982f",
+              "name": "Location",
+              "value": "={{ $json.Location }}",
+              "type": "string"
+            },
+            {
+              "id": "a09b2848-2091-4629-aa6b-e488a5f76b4d",
+              "name": "Age",
+              "value": "={{ $json.Age }}",
+              "type": "string"
+            },
+            {
+              "id": "34bf9b2a-b779-4c13-bd35-2b81d59ef196",
+              "name": "Social Status",
+              "value": "={{ $json['Social Status'] }}",
+              "type": "string"
+            },
+            {
+              "id": "4c875a2b-69ab-4658-8f77-6d8a17378c91",
+              "name": "Lead Region",
+              "value": "={{ $json['Lead Region'] }}",
+              "type": "string"
+            },
+            {
+              "id": "71050cc0-f529-4906-8b36-e625ceddc3c4",
+              "name": "International Lead?",
+              "value": "={{ $json['International Lead?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "79b96c3f-8c55-4e19-94d3-399ae4f33dbd",
+              "name": "Payment Claimed?",
+              "value": "={{ $json['Payment Claimed?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e9e19cf1-ae09-424b-b017-9667c5300f5d",
+              "name": "Proof of Payment",
+              "value": "={{ $json['Proof of Payment'] }}",
+              "type": "string"
+            },
+            {
+              "id": "620a3034-679e-460e-968b-603e2faff128",
+              "name": "Payment Verified?",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "eebaff27-b78c-4e68-80a2-fb4030751d0c",
+              "name": "Situation Response",
+              "value": "={{ $json['Situation Response'] }}",
+              "type": "string"
+            },
+            {
+              "id": "b862d319-835a-473c-8aa8-7978c205c9e7",
+              "name": "Situation Response",
+              "value": "={{ $json['Situation Response'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6ed09bb1-cd3c-4e54-8116-09bee3662392",
+              "name": "Form Validation Status",
+              "value": "={{ $json['Form Validation Status'] }}",
+              "type": "string"
+            },
+            {
+              "id": "bdb1775e-116d-4c6d-8004-55c386495655",
+              "name": "Form Anomalies",
+              "value": "={{ $json['Form Anomalies'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e88f9c38-33d4-4825-86f1-02c1ce19c6f4",
+              "name": "Possible Test Submission?",
+              "value": "={{ $json['Possible Test Submission?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "ef9f0593-d17c-45b3-9275-5514a2ffb140",
+              "name": "Lead Status",
+              "value": "={{ $json['Lead Status'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9dfa463b-8dfa-44a5-bb40-f2ba6aef67bd",
+              "name": "Welcome Email Sent?",
+              "value": "={{ $json['Welcome Email Sent?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a1503791-0d6a-4df0-b419-d44171cfb52f",
+              "name": "Follow-up Requested?",
+              "value": "={{ $json['Follow-up Requested?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "c861706a-25bf-4743-9f4a-daa56a5cb0f3",
+              "name": "Follow-up Status",
+              "value": "={{ $json['Follow-up Status'] }}",
+              "type": "string"
+            },
+            {
+              "id": "5297fbc4-0565-47e5-87a2-aebbe0deaad5",
+              "name": "Last Updated",
+              "value": "={{ $json['Last Updated'] }}",
+              "type": "string"
+            },
+            {
+              "id": "ef1a5137-80bc-46c4-90a7-01a8475c41ee",
+              "name": "Staff Verification Notes",
+              "value": "={{ $json['Staff Verification Notes'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2e125461-eaa8-4f99-be4e-ad8ee470f2a0",
+              "name": "AI Analysis Status",
+              "value": "={{ $json['AI Analysis Status'] }}",
+              "type": "string"
+            },
+            {
+              "id": "4657e698-339c-454a-af7b-6bd0d2d2d77d",
+              "name": "Meta Click ID",
+              "value": "={{ $json['Meta Click ID'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -192,
+        -16
+      ],
+      "id": "4b2dfd53-e43e-4574-b08b-7b9134e6f36d",
+      "name": "Collect only fields we need to proceed",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit?usp=drivesdk",
+          "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com(?:\\/.*|)\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MASTER SRM LEAD TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "HEART2HEART ENTERPRISE | MASTER SRM LEAD & PAYMENT VERIFICATION TRACKER"
+          ],
+          "schema": [
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead ID",
+              "displayName": "Lead ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "WhatsApp / Phone",
+              "displayName": "WhatsApp / Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Social Status",
+              "displayName": "Social Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead Region",
+              "displayName": "Lead Region",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "International Lead?",
+              "displayName": "International Lead?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Payment Claimed?",
+              "displayName": "Payment Claimed?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Proof of Payment",
+              "displayName": "Proof of Payment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Payment Verified?",
+              "displayName": "Payment Verified?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Situation Response",
+              "displayName": "Situation Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Self-Description",
+              "displayName": "Self-Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Form Validation Status",
+              "displayName": "Form Validation Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Form Anomalies",
+              "displayName": "Form Anomalies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Possible Test Submission?",
+              "displayName": "Possible Test Submission?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead Status",
+              "displayName": "Lead Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Welcome Email Sent?",
+              "displayName": "Welcome Email Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-up Requested?",
+              "displayName": "Follow-up Requested?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-up Status",
+              "displayName": "Follow-up Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Updated",
+              "displayName": "Last Updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Staff Verification Notes",
+              "displayName": "Staff Verification Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AI Analysis Status",
+              "displayName": "AI Analysis Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "locationDefine": {
+            "values": {
+              "headerRow": 8,
+              "firstDataRow": 9
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "8cc22de9-55f9-4778-b597-2aa2abb39901",
+      "name": "Add lead data to Master tracker",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3b703578-c88f-4fac-89f6-f339484f082f",
+              "leftValue": "={{ $json['Payment Claimed?'] }}",
+              "rightValue": "YES",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        192,
+        -16
+      ],
+      "id": "7fd7ee4f-15dc-438f-840f-36ab392b7e5a",
+      "name": "payment claimed to be made",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "=15D6SlfXaiXi1Zn3tUBLkcBXU_GuuvAgBlGQk13i9cqE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MASTER SRM LEAD TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Payment Verified?": "PENDING",
+            "Lead Status": "PAYMENT CLAIMED",
+            "Lead ID": "={{ $json['Lead ID'] }}"
+          },
+          "matchingColumns": [
+            "Lead ID"
+          ],
+          "schema": [
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead ID",
+              "displayName": "Lead ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp / Phone",
+              "displayName": "WhatsApp / Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Social Status",
+              "displayName": "Social Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Region",
+              "displayName": "Lead Region",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "International Lead?",
+              "displayName": "International Lead?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Claimed?",
+              "displayName": "Payment Claimed?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Proof of Payment",
+              "displayName": "Proof of Payment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Verified?",
+              "displayName": "Payment Verified?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Situation Response",
+              "displayName": "Situation Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Self-Description",
+              "displayName": "Self-Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Validation Status",
+              "displayName": "Form Validation Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Anomalies",
+              "displayName": "Form Anomalies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Possible Test Submission?",
+              "displayName": "Possible Test Submission?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Status",
+              "displayName": "Lead Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Welcome Email Sent?",
+              "displayName": "Welcome Email Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Requested?",
+              "displayName": "Follow-up Requested?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Status",
+              "displayName": "Follow-up Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Updated",
+              "displayName": "Last Updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Staff Verification Notes",
+              "displayName": "Staff Verification Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysis Status",
+              "displayName": "AI Analysis Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "locationDefine": {
+            "values": {
+              "headerRow": 8,
+              "firstDataRow": 9
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        -112
+      ],
+      "id": "31578e49-fc7f-40ed-b327-5a845bdc0032",
+      "name": "Check to verify payment",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "15D6SlfXaiXi1Zn3tUBLkcBXU_GuuvAgBlGQk13i9cqE",
+          "mode": "list",
+          "cachedResultName": "HEART2HEART ENTERPRISE MASTER SRM LEAD & PAYMENT VERIFICATION TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MASTER SRM LEAD TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Lead Status": "WARM",
+            "Lead ID": "={{ $json['Lead ID'] }}"
+          },
+          "matchingColumns": [
+            "Lead ID"
+          ],
+          "schema": [
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead ID",
+              "displayName": "Lead ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp / Phone",
+              "displayName": "WhatsApp / Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Social Status",
+              "displayName": "Social Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Region",
+              "displayName": "Lead Region",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "International Lead?",
+              "displayName": "International Lead?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Claimed?",
+              "displayName": "Payment Claimed?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Proof of Payment",
+              "displayName": "Proof of Payment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Verified?",
+              "displayName": "Payment Verified?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Situation Response",
+              "displayName": "Situation Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Self-Description",
+              "displayName": "Self-Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Validation Status",
+              "displayName": "Form Validation Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Anomalies",
+              "displayName": "Form Anomalies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Possible Test Submission?",
+              "displayName": "Possible Test Submission?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Status",
+              "displayName": "Lead Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Welcome Email Sent?",
+              "displayName": "Welcome Email Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Requested?",
+              "displayName": "Follow-up Requested?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Status",
+              "displayName": "Follow-up Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Updated",
+              "displayName": "Last Updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Staff Verification Notes",
+              "displayName": "Staff Verification Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysis Status",
+              "displayName": "AI Analysis Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "locationDefine": {
+            "values": {
+              "headerRow": 8,
+              "firstDataRow": 9
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        304
+      ],
+      "id": "fc3f1575-0f28-44d2-90a8-8cf8e7c00628",
+      "name": "Has not paid, warm lead",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5b601b2c-951b-46cb-bd0c-1c32b77978b8",
+              "leftValue": "={{ $('payment claimed to be made').item.json[\"Follow-up Requested?\"] }}",
+              "rightValue": "YES",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        144
+      ],
+      "id": "b695a707-eb83-4e9a-be2b-c817abb74730",
+      "name": "Requests followup",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "15D6SlfXaiXi1Zn3tUBLkcBXU_GuuvAgBlGQk13i9cqE",
+          "mode": "list",
+          "cachedResultName": "HEART2HEART ENTERPRISE MASTER SRM LEAD & PAYMENT VERIFICATION TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MASTER SRM LEAD TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Lead ID": "={{ $('payment claimed to be made').item.json[\"Lead ID\"] }}",
+            "Follow-up Status": "ACTIVE"
+          },
+          "matchingColumns": [
+            "Lead ID"
+          ],
+          "schema": [
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead ID",
+              "displayName": "Lead ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp / Phone",
+              "displayName": "WhatsApp / Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Social Status",
+              "displayName": "Social Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Region",
+              "displayName": "Lead Region",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "International Lead?",
+              "displayName": "International Lead?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Claimed?",
+              "displayName": "Payment Claimed?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Proof of Payment",
+              "displayName": "Proof of Payment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Verified?",
+              "displayName": "Payment Verified?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Situation Response",
+              "displayName": "Situation Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Self-Description",
+              "displayName": "Self-Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Validation Status",
+              "displayName": "Form Validation Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Anomalies",
+              "displayName": "Form Anomalies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Possible Test Submission?",
+              "displayName": "Possible Test Submission?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Status",
+              "displayName": "Lead Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Welcome Email Sent?",
+              "displayName": "Welcome Email Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Requested?",
+              "displayName": "Follow-up Requested?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Status",
+              "displayName": "Follow-up Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Updated",
+              "displayName": "Last Updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Staff Verification Notes",
+              "displayName": "Staff Verification Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysis Status",
+              "displayName": "AI Analysis Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "locationDefine": {
+            "values": {
+              "headerRow": 8,
+              "firstDataRow": 9
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1232,
+        -64
+      ],
+      "id": "59f9aac0-9f8e-4823-8f23-dba7ec0bdc8b",
+      "name": "Update Tracker to Followup Active",
+      "retryOnFail": true,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "sendTo": "demo@example.com",
+        "subject": "=SRM Warm Lead | {{ $('payment claimed to be made').item.json['Full Name'] }}  | Nurture Opportunity",
+        "message": "=SRM WARM LEAD\n\nA new SRM prospect has been classified as a WARM / PASSIVE lead.\n\nThey did not request direct follow-up at this time, so please do not treat this as a cold lead or an immediate outreach task.\n\nLEAD DETAILS\n\nName: {{ $('payment claimed to be made').item.json['Full Name'] }}\nWhatsApp / Phone: {{ $('payment claimed to be made').item.json['WhatsApp / Phone'] }}\nEmail: {{ $('payment claimed to be made').item.json['Email Address'] }}\nLocation: {{ $('payment claimed to be made').item.json['Location'] }}\n\nWHAT THEY SHARED\n\n{{ $('payment claimed to be made').item.json['Situation Response'] }}\n\nWHY THIS LEAD MATTERS\n\nThis person has already responded to our SRM campaign and provided their details. Their decision not to request direct follow-up does not mean there is no opportunity.\n\nThis lead can potentially be:\n\n• Softly nurtured toward SRM\n• Re-engaged at the right time\n• Introduced to other Heart2Heart Enterprise programmes that may be a better fit\n• Invited into relevant H2H communities and initiatives\n• Educated about H2H and the value of our programmes\n• Developed into a stronger future prospect\n\nThe objective is to build a relationship and create future conversion opportunities without applying unnecessary sales pressure.\n\nNEXT STEP\n\nNo immediate direct outreach is required.\n\nPlease retain this lead in the H2H database and consider them for future nurturing, community engagement, SRM conversion, and other relevant H2H offers.\n\nOur advertising spend has already brought this person into our ecosystem. The opportunity now is to nurture that relationship and create value from the lead over time.\n\nLead ID: {{ $('payment claimed to be made').item.json['Lead ID'] }}\n\nFollow-up Requested: {{ $('payment claimed to be made').item.json['Follow-up Requested?'] }}\n\nFollow-up Status: PASSIVE\n\nLead Status: WARM",
+        "options": {
+          "ccList": "demo@example.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        256
+      ],
+      "id": "5dff1007-251d-410f-8e5d-9a8a126dd3df",
+      "name": "Send a message1"
+    },
+    {
+      "parameters": {
+        "sendTo": "demo@example.com",
+        "subject": "=SRM Payment Verification Required | {{ $('payment claimed to be made').item.json['Full Name'] }}",
+        "message": "=SRM PAYMENT VERIFICATION  A new SRM prospect has indicated that they have made payment.  Please verify the payment before the lead is treated as a paid participant.  LEAD DETAILS  Name: {{ $('payment claimed to be made').item.json['Full Name'] }} WhatsApp / Phone: {{ $('payment claimed to be made').item.json['WhatsApp / Phone'] }} Email: {{ $('payment claimed to be made').item.json['Email Address'] }} Location: {{ $('payment claimed to be made').item.json['Location'] }}  PAYMENT INFORMATION  Payment Claimed: {{ $('payment claimed to be made').item.json['Payment Claimed?'] }}  Proof of Payment: {{ $('payment claimed to be made').item.json['Proof of Payment'] }}  ACTION REQUIRED  1. Check the submitted proof of payment, if available. 2. Confirm the transaction against the official H2H payment records. 3. If the payment is confirmed, update \"Payment Verified?\" in the Master SRM Lead Tracker to YES. 4. If the payment cannot be confirmed, update \"Payment Verified?\" to NO and add the reason in \"Staff Verification Notes\". 5. Do not mark the lead as paid based on the submitted receipt alone.  Lead ID: {{ $('payment claimed to be made').item.json['Lead ID'] }}  Current Payment Verification Status: PENDING  Once verification is completed, the next stage of the SRM automation will handle the appropriate action.",
+        "options": {
+          "ccList": "demo@example.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        656,
+        -96
+      ],
+      "id": "4394719b-486a-4b27-a1e9-f226f4318903",
+      "name": "Send a message2",
+      "alwaysOutputData": false,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "15D6SlfXaiXi1Zn3tUBLkcBXU_GuuvAgBlGQk13i9cqE",
+          "mode": "list",
+          "cachedResultName": "HEART2HEART ENTERPRISE MASTER SRM LEAD & PAYMENT VERIFICATION TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MASTER SRM LEAD TRACKER",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_SPREADSHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Follow-up Status": "PASSIVE ",
+            "Lead ID": "={{ $json[\"Lead ID\"] }}"
+          },
+          "matchingColumns": [
+            "Lead ID"
+          ],
+          "schema": [
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead ID",
+              "displayName": "Lead ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp / Phone",
+              "displayName": "WhatsApp / Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Age",
+              "displayName": "Age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Social Status",
+              "displayName": "Social Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Region",
+              "displayName": "Lead Region",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "International Lead?",
+              "displayName": "International Lead?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Claimed?",
+              "displayName": "Payment Claimed?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Proof of Payment",
+              "displayName": "Proof of Payment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Verified?",
+              "displayName": "Payment Verified?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Situation Response",
+              "displayName": "Situation Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Self-Description",
+              "displayName": "Self-Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Validation Status",
+              "displayName": "Form Validation Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Form Anomalies",
+              "displayName": "Form Anomalies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Possible Test Submission?",
+              "displayName": "Possible Test Submission?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Status",
+              "displayName": "Lead Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Welcome Email Sent?",
+              "displayName": "Welcome Email Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Requested?",
+              "displayName": "Follow-up Requested?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-up Status",
+              "displayName": "Follow-up Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Updated",
+              "displayName": "Last Updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Staff Verification Notes",
+              "displayName": "Staff Verification Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysis Status",
+              "displayName": "AI Analysis Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "locationDefine": {
+            "values": {
+              "headerRow": 8,
+              "firstDataRow": 9
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        272
+      ],
+      "id": "80c4d44a-3474-4fb3-8bcc-ab1a8c964be5",
+      "name": "Update tracker to Future Sales Opportunities",
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    }
+  ],
+  "connections": {
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Update Tracker to Followup Active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form Submission": {
+      "main": [
+        [
+          {
+            "node": "Collect data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect data": {
+      "main": [
+        [
+          {
+            "node": "Clean data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean data": {
+      "main": [
+        [
+          {
+            "node": "Collect only fields we need to proceed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect only fields we need to proceed": {
+      "main": [
+        [
+          {
+            "node": "Add lead data to Master tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add lead data to Master tracker": {
+      "main": [
+        [
+          {
+            "node": "payment claimed to be made",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "payment claimed to be made": {
+      "main": [
+        [
+          {
+            "node": "Check to verify payment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Has not paid, warm lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has not paid, warm lead": {
+      "main": [
+        [
+          {
+            "node": "Requests followup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requests followup": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update tracker to Future Sales Opportunities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check to verify payment": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update tracker to Future Sales Opportunities": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false
+}
